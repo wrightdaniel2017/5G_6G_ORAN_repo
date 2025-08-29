@@ -1,0 +1,2954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Telecommunications Laboratory - 5G/6G Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/101/three.min.js"></script>
+    <!-- Telecommunications Tooltips CSS -->
+    <link href="/static/css/tooltips.css" rel="stylesheet">
+    <!-- Enhanced Tooltip Features CSS -->
+    <link href="/static/css/tooltip_enhancements.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1565C0;
+            --secondary-color: #0D47A1;
+            --accent-color: #42A5F5;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --danger-color: #F44336;
+        }
+
+        #retroarch-background {
+            position: fixed;
+            display: block;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            left: 0;
+            background: linear-gradient(to bottom, #000, #111);
+            z-index: -1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: transparent;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .navbar {
+            background: var(--primary-color) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .hero-section {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .signal-display {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(21, 101, 192, 0.4);
+        }
+
+        .modulation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .modulation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .modulation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .performance-metrics {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .metric-label {
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .spinner-border {
+            color: var(--accent-color);
+        }
+
+        .alert-info {
+            background: rgba(66, 165, 245, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        .topology-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .topology-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: 2px solid var(--accent-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .topology-btn:hover, .topology-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .answer-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .answer-text {
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        /* Canvas Styles */
+        .canvas-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .interactive-canvas {
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            margin: 10px auto;
+            display: block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-canvas:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(21, 101, 192, 0.3);
+        }
+
+        .canvas-controls {
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .canvas-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--accent-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .canvas-btn:hover, .canvas-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .canvas-description {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Telecommunications Tooltips */
+        .telecom-tooltip {
+            position: relative;
+            cursor: help;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            color: inherit;
+        }
+        
+        .telecom-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: normal;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid #555;
+        }
+        
+        .telecom-tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: -6px;
+            border: 6px solid transparent;
+            border-top-color: #333;
+            z-index: 1001;
+        }
+        
+        /* Enhanced tooltip for longer descriptions */
+        .telecom-tooltip[data-tooltip*="-"]::after {
+            white-space: normal;
+            max-width: 250px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <!-- RetroArch Animated Background -->
+    <div id="retroarch-background"></div>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-broadcast-tower me-2"></i>
+                Telecommunications Laboratory
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#signal-analysis">Signal Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#modulation">Modulation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#performance">Performance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#path-loss">Path Loss</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#5g-analysis">5G Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#questions">Q&A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analytics">
+                            <i class="fas fa-chart-bar me-1"></i>Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tooltip_test">
+                            <i class="fas fa-flask me-1"></i>Test
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link bg-warning text-dark px-3 rounded ms-2" href="/printable" target="_blank">
+                            <i class="fas fa-file-pdf me-1"></i>PDF Export
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                <i class="fas fa-satellite-dish"></i>
+                Enhanced Telecommunications Laboratory
+            </h1>
+            <p class="hero-subtitle">
+                Advanced <span class="telecom-tooltip" data-tooltip="5th/6th Generation wireless technology">5G/6G</span> Communication System Analysis with Real-time Signal Processing,
+                Interactive Canvas Visualizations, and Performance Metrics
+            </p>
+            <div class="mt-4">
+                <span class="badge bg-light text-dark fs-6 me-2">
+                    <i class="fas fa-wifi"></i> <span class="telecom-tooltip" data-tooltip="5G New Radio - The air interface standard for 5G networks">5G NR</span> Ready
+                </span>
+                <span class="badge bg-light text-dark fs-6 me-2">
+                    <i class="fas fa-chart-line"></i> Real-time Analysis
+                </span>
+                <span class="badge bg-light text-dark fs-6">
+                    <i class="fas fa-draw-polygon"></i> Interactive Canvas
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mt-5">
+        <!-- Laboratory Features Overview -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4 text-white">
+                    <i class="fas fa-microscope"></i> Laboratory Features
+                </h2>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h5 class="card-title">Signal Processing</h5>
+                        <p class="card-text">Advanced digital signal processing with multiple modulation schemes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h5 class="card-title"><span class="telecom-tooltip" data-tooltip="5th Generation wireless technology">5G</span>/<span class="telecom-tooltip" data-tooltip="6th Generation wireless technology - Next evolution beyond 5G">6G</span> Systems</h5>
+                        <p class="card-text">Next-generation wireless communication system analysis</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h5 class="card-title">Performance Metrics</h5>
+                        <p class="card-text">Real-time <span class="telecom-tooltip" data-tooltip="Bit Error Rate - Measure of transmission accuracy">BER</span>, <span class="telecom-tooltip" data-tooltip="Signal-to-Noise Ratio - Measure of signal quality">SNR</span>, and spectral efficiency analysis</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-draw-polygon"></i>
+                        </div>
+                        <h5 class="card-title">Interactive Canvas</h5>
+                        <p class="card-text">Real-time drawn visualizations of telecommunication concepts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signal Analysis Section -->
+        <section id="signal-analysis">
+            <div class="control-panel">
+                <h3><i class="fas fa-sliders-h text-primary"></i> Signal Analysis Controls</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="num-bits" class="form-label">Number of Bits</label>
+                        <input type="range" class="form-range" id="num-bits" min="20" max="200" value="50">
+                        <div class="form-text">Current: <span id="bits-value">50</span> bits</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="modulation-select" class="form-label">Modulation Scheme</label>
+                        <select class="form-select" id="modulation-select">
+                            <option value="BPSK"><span class="telecom-tooltip" data-tooltip="Binary Phase Shift Keying - Digital modulation using phase changes to represent bits">BPSK</span> (Binary Phase Shift Keying)</option>
+                            <option value="QPSK"><span class="telecom-tooltip" data-tooltip="Quadrature Phase Shift Keying - Digital modulation using 4 phase states">QPSK</span> (Quadrature Phase Shift Keying)</option>
+                            <option value="16-QAM"><span class="telecom-tooltip" data-tooltip="16-Quadrature Amplitude Modulation - Digital modulation using 16 amplitude/phase combinations">16-QAM</span> (16-Quadrature Amplitude Modulation)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="noise-level" class="form-label">Noise Level</label>
+                        <input type="range" class="form-range" id="noise-level" min="0" max="1" step="0.1" value="0.1">
+                        <div class="form-text">Current: <span id="noise-value">0.1</span></div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-primary btn-lg" onclick="generateSignals()">
+                        <i class="fas fa-play"></i> Generate & Analyze Signals
+                    </button>
+                    <button class="btn btn-outline-primary btn-lg ms-2" onclick="downloadResults()">
+                        <i class="fas fa-download"></i> Export Results
+                    </button>
+                </div>
+            </div>
+
+            <div class="signal-display">
+                <div id="signal-loading" class="text-center p-4" style="display: none;">
+                    <div class="spinner-border" role="status"></div>
+                    <div class="mt-2">Generating signal analysis...</div>
+                </div>
+                <div id="signal-results" class="text-center">
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle"></i>
+                        Configure parameters above and click "Generate & Analyze Signals" to see results
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modulation Analysis Section -->
+        <section id="modulation" class="mt-5">
+            <h3 class="text-white text-center mb-4">
+                <i class="fas fa-wave-square"></i> Modulation Schemes Analysis
+            </h3>
+            <div class="modulation-grid">
+                <div class="modulation-card" onclick="showConstellation('BPSK')">
+                    <i class="fas fa-dot-circle fa-3x text-primary mb-3"></i>
+                    <h5><span class="telecom-tooltip" data-tooltip="Binary Phase Shift Keying - Simplest form of PSK modulation">BPSK</span></h5>
+                    <p>1 bit/symbol<br>High reliability</p>
+                    <div class="highlight-box">
+                        <strong>Best for:</strong> Long-range communications, low SNR environments
+                    </div>
+                </div>
+                <div class="modulation-card" onclick="showConstellation('QPSK')">
+                    <i class="fas fa-th-large fa-3x text-success mb-3"></i>
+                    <h5><span class="telecom-tooltip" data-tooltip="Quadrature Phase Shift Keying - Uses 4 phase states for 2 bits per symbol">QPSK</span></h5>
+                    <p>2 bits/symbol<br>Balanced performance</p>
+                    <div class="highlight-box">
+                        <strong>Best for:</strong> General-purpose applications, satellite communications
+                    </div>
+                </div>
+                <div class="modulation-card" onclick="showConstellation('16-QAM')">
+                    <i class="fas fa-th fa-3x text-warning mb-3"></i>
+                    <h5><span class="telecom-tooltip" data-tooltip="16-Quadrature Amplitude Modulation - High-order modulation for increased data rates">16-QAM</span></h5>
+                    <p>4 bits/symbol<br>Higher throughput</p>
+                    <div class="highlight-box">
+                        <strong>Best for:</strong> High-speed data, good channel conditions
+                    </div>
+                </div>
+            </div>
+            
+            <div class="signal-display">
+                <div id="constellation-loading" class="text-center p-4" style="display: none;">
+                    <div class="spinner-border" role="status"></div>
+                    <div class="mt-2">Generating constellation diagram...</div>
+                </div>
+                <div id="constellation-results" class="text-center">
+                    <p class="text-muted">
+                        <i class="fas fa-mouse-pointer"></i>
+                        Click on a modulation scheme above to view its constellation diagram
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Analysis Section -->
+        <section id="performance" class="mt-5">
+            <div class="performance-metrics">
+                <h3 class="text-center mb-4">
+                    <i class="fas fa-tachometer-alt"></i> Performance Analysis
+                </h3>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="metric-item">
+                            <div class="metric-value" id="current-ber">-</div>
+                            <div class="metric-label">Current <span class="telecom-tooltip" data-tooltip="Bit Error Rate - Number of bit errors per total bits transmitted">BER</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-item">
+                            <div class="metric-value" id="current-snr">-</div>
+                            <div class="metric-label"><span class="telecom-tooltip" data-tooltip="Signal-to-Noise Ratio - Power ratio between signal and background noise">SNR</span> (dB)</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-item">
+                            <div class="metric-value" id="spectral-efficiency">-</div>
+                            <div class="metric-label">Spectral Efficiency</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-item">
+                            <div class="metric-value" id="throughput">-</div>
+                            <div class="metric-label">Throughput (Mbps)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-light btn-lg" onclick="showPerformanceAnalysis()">
+                        <i class="fas fa-chart-line"></i> Show BER vs SNR Analysis
+                    </button>
+                </div>
+            </div>
+            
+            <div class="signal-display">
+                <div id="performance-results"></div>
+            </div>
+        </section>
+
+        <!-- 5G Technology Analysis -->
+        <section id="5g-analysis" class="mt-5">
+            <div class="control-panel">
+                <h3><i class="fas fa-satellite text-primary"></i> 5G/6G Technology Analysis</h3>
+                <p class="lead">Compare next-generation wireless technologies and their performance characteristics.</p>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>5G Key Features:</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Enhanced Mobile Broadband (<span class="telecom-tooltip" data-tooltip="Enhanced Mobile Broadband - 5G use case for high-speed data services">eMBB</span>)</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Ultra-Reliable Low Latency (<span class="telecom-tooltip" data-tooltip="Ultra-Reliable Low Latency Communication - 5G use case for mission-critical applications">URLLC</span>)</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Massive Machine Type Communication (<span class="telecom-tooltip" data-tooltip="Massive Machine Type Communication - 5G use case for IoT and sensor networks">mMTC</span>)</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Network Slicing</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Technology Specifications:</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item"><strong>Frequency:</strong> Sub-6 <span class="telecom-tooltip" data-tooltip="Gigahertz - Unit of frequency (billion cycles per second)">GHz</span> & <span class="telecom-tooltip" data-tooltip="Millimeter Wave - High frequency bands (24-100 GHz) used in 5G">mmWave</span></li>
+                            <li class="list-group-item"><strong>Peak Speed:</strong> 20 <span class="telecom-tooltip" data-tooltip="Gigabits per second - Data rate measurement">Gbps</span> (<span class="telecom-tooltip" data-tooltip="Downlink - Communication from base station to mobile device">DL</span>), 10 <span class="telecom-tooltip" data-tooltip="Gigabits per second">Gbps</span> (<span class="telecom-tooltip" data-tooltip="Uplink - Communication from mobile device to base station">UL</span>)</li>
+                            <li class="list-group-item"><strong>Latency:</strong> <1ms (<span class="telecom-tooltip" data-tooltip="Ultra-Reliable Low Latency Communication - Critical for real-time applications">URLLC</span>)</li>
+                            <li class="list-group-item"><strong>Devices/km²:</strong> 1 Million</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-lg" onclick="show5GComparison()">
+                    <i class="fas fa-rocket"></i> Show 5G vs 4G vs 6G Comparison
+                </button>
+            </div>
+            
+            <div class="signal-display">
+                <div id="5g-results"></div>
+            </div>
+        </section>
+
+        <!-- Free-Space Path Loss Analysis -->
+        <section id="path-loss" class="mt-5">
+            <div class="control-panel">
+                <h3><i class="fas fa-signal text-primary"></i> Free-Space Path Loss Analysis (2.4 GHz)</h3>
+                <p class="lead">Analyze signal attenuation over distance in free space at 2.4 GHz frequency.</p>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label for="max-distance" class="form-label">Maximum Distance (meters)</label>
+                        <input type="range" class="form-range" id="max-distance" min="10" max="10000" value="1000" step="10">
+                        <div class="form-text">Current: <span id="distance-value">1000</span> meters</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="tx-power" class="form-label">Transmitter Power (dBm)</label>
+                        <input type="range" class="form-range" id="tx-power" min="0" max="30" value="20">
+                        <div class="form-text">Current: <span id="power-value">20</span> dBm</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="frequency" class="form-label">Frequency (GHz)</label>
+                        <select class="form-select" id="frequency">
+                            <option value="2.4" selected>2.4 GHz (WiFi, Bluetooth)</option>
+                            <option value="5.0">5.0 GHz (WiFi)</option>
+                            <option value="28">28 GHz (5G mmWave)</option>
+                            <option value="60">60 GHz (WiGig)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Free-Space Path Loss Formula:</strong> 
+                    <span class="telecom-tooltip" data-tooltip="Free-Space Path Loss - Signal attenuation in ideal conditions">FSPL</span>(dB) = 20×log₁₀(d) + 20×log₁₀(f) + 20×log₁₀(4π/c)
+                    where d = distance(m), f = frequency(Hz), c = speed of light
+                </div>
+                
+                <button class="btn btn-primary btn-lg" onclick="generatePathLossChart()">
+                    <i class="fas fa-chart-line"></i> Generate Path Loss Chart
+                </button>
+                <button class="btn btn-outline-primary btn-lg ms-2" onclick="showPathLossTable()">
+                    <i class="fas fa-table"></i> Show Distance Table
+                </button>
+            </div>
+
+            <div class="signal-display">
+                <div id="pathloss-loading" class="text-center p-4" style="display: none;">
+                    <div class="spinner-border" role="status"></div>
+                    <div class="mt-2">Calculating path loss analysis...</div>
+                </div>
+                <div id="pathloss-results" class="text-center">
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle"></i>
+                        Configure parameters above and click "Generate Path Loss Chart" to see signal attenuation analysis
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Topology Analysis -->
+        <section class="mt-5">
+            <div class="control-panel">
+                <h3><i class="fas fa-project-diagram text-primary"></i> Network Topology Analysis</h3>
+                <p class="lead">Explore different network architectures and their characteristics.</p>
+                
+                <div class="topology-selector">
+                    <button class="topology-btn" onclick="showTopology('star')">
+                        <i class="fas fa-star"></i> Star Topology
+                    </button>
+                    <button class="topology-btn" onclick="showTopology('mesh')">
+                        <i class="fas fa-project-diagram"></i> Mesh Topology
+                    </button>
+                    <button class="topology-btn" onclick="showTopology('ring')">
+                        <i class="fas fa-circle-notch"></i> Ring Topology
+                    </button>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Interactive Analysis:</strong> Click on different topology types to see their visual representation 
+                    and understand their advantages and limitations in modern communication systems.
+                </div>
+            </div>
+            
+            <div class="signal-display">
+                <div id="topology-results"></div>
+            </div>
+        </section>
+
+        <!-- Questions and Answers Section with Canvas Visualizations -->
+        <section id="questions" class="mt-5">
+            <div class="answer-section">
+                <h2 class="text-center mb-4">
+                    <i class="fas fa-question-circle text-primary"></i> 
+                    Telecommunications Fundamentals - Interactive Q&A
+                </h2>
+                
+                <!-- Question 1 -->
+                <div class="question-card">
+                    <h4><i class="fas fa-broadcast-tower text-primary"></i> Question 1: Definition and Scope</h4>
+                    <p><strong>What is the definition of a telecommunications system, and what is its primary scope in modern communication?</strong></p>
+                </div>
+                <div class="answer-text">
+                    <p><strong>Definition:</strong> A telecommunications system is the exchange of information over distances using electronic means. It encompasses the entire infrastructure and technology that enables communication between parties separated by physical distance.</p>
+                    
+                    <!-- Canvas Visualization for Question 1 -->
+                    <div class="canvas-container">
+                        <h5><i class="fas fa-draw-polygon text-primary"></i> Interactive System Overview</h5>
+                        <canvas id="systemOverviewCanvas" class="interactive-canvas" width="800" height="300"></canvas>
+                        <div class="canvas-controls">
+                            <button class="canvas-btn" onclick="animateSystemOverview()">
+                                <i class="fas fa-play"></i> Animate Data Flow
+                            </button>
+                            <button class="canvas-btn" onclick="showSystemComponents()">
+                                <i class="fas fa-cogs"></i> Show Components
+                            </button>
+                        </div>
+                        <div class="canvas-description">
+                            Click "Animate Data Flow" to see how information travels through a telecommunications system
+                        </div>
+                    </div>
+                    
+                    <h6>Primary Scope in Modern Communication:</h6>
+                    <ul>
+                        <li><strong>Wired Networks:</strong> Fiber optic systems, copper-based networks, <span class="telecom-tooltip" data-tooltip="Ethernet - Local area network technology for wired connections">ethernet</span></li>
+                        <li><strong>Wireless Networks:</strong> Mobile communications (<span class="telecom-tooltip" data-tooltip="3rd Generation mobile technology">3G</span>, <span class="telecom-tooltip" data-tooltip="4th Generation mobile technology (LTE)">4G</span>, <span class="telecom-tooltip" data-tooltip="5th Generation mobile technology">5G</span>), <span class="telecom-tooltip" data-tooltip="Wireless Fidelity - Local wireless networking standard">Wi-Fi</span>, <span class="telecom-tooltip" data-tooltip="Short-range wireless communication standard">Bluetooth</span>, satellite</li>
+                        <li><strong>Internet Infrastructure:</strong> Backbone networks, routing systems, protocols</li>
+                        <li><strong>Broadcasting Systems:</strong> Television, radio, streaming services</li>
+                        <li><strong>Specialized Applications:</strong> <span class="telecom-tooltip" data-tooltip="Internet of Things - Network of connected devices and sensors">IoT</span> devices, industrial automation, smart cities</li>
+                        <li><strong>Modern Applications:</strong> Telemedicine, e-learning, online banking, social media</li>
+                    </ul>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card mt-4">
+                    <h4><i class="fas fa-cogs text-primary"></i> Question 2: System Components</h4>
+                    <p><strong>Explain the basic components of a communication system and describe the role of each: transmitter, channel, and receiver.</strong></p>
+                </div>
+                <div class="answer-text">
+                    
+                    <!-- Canvas Visualization for Question 2 -->
+                    <div class="canvas-container">
+                        <h5><i class="fas fa-draw-polygon text-primary"></i> Communication System Components</h5>
+                        <canvas id="componentsCanvas" class="interactive-canvas" width="800" height="400"></canvas>
+                        <div class="canvas-controls">
+                            <button class="canvas-btn" onclick="showTransmitter()">
+                                <i class="fas fa-broadcast-tower"></i> Transmitter
+                            </button>
+                            <button class="canvas-btn" onclick="showChannel()">
+                                <i class="fas fa-wifi"></i> Channel
+                            </button>
+                            <button class="canvas-btn" onclick="showReceiver()">
+                                <i class="fas fa-satellite-dish"></i> Receiver
+                            </button>
+                            <button class="canvas-btn" onclick="showCompleteSystem()">
+                                <i class="fas fa-project-diagram"></i> Complete System
+                            </button>
+                        </div>
+                        <div class="canvas-description">
+                            Click on each component to see its detailed function and characteristics
+                        </div>
+                    </div>
+
+                    <h6>1. Transmitter:</h6>
+                    <ul>
+                        <li><strong>Role:</strong> Converts information signal into a form suitable for transmission</li>
+                        <li><strong>Functions:</strong> Signal encoding, modulation, amplification, filtering</li>
+                        <li><strong>Example:</strong> Mobile phone's microphone and circuitry</li>
+                    </ul>
+                    
+                    <h6>2. Channel:</h6>
+                    <ul>
+                        <li><strong>Role:</strong> Medium that carries the signal from transmitter to receiver</li>
+                        <li><strong>Types:</strong> Wired (fiber, coaxial, twisted pair) and Wireless (radio, microwave, satellite)</li>
+                        <li><strong>Characteristics:</strong> Introduces noise, attenuation, and distortion</li>
+                    </ul>
+                    
+                    <h6>3. Receiver:</h6>
+                    <ul>
+                        <li><strong>Role:</strong> Recovers original information from received signal</li>
+                        <li><strong>Functions:</strong> Amplification, filtering, demodulation, decoding</li>
+                        <li><strong>Example:</strong> Mobile phone's speaker and processing circuitry</li>
+                    </ul>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card mt-4">
+                    <h4><i class="fas fa-wave-square text-primary"></i> Question 3: Analog vs Digital</h4>
+                    <p><strong>Differentiate between analog and digital communication systems. What are the key performance metrics used to evaluate them?</strong></p>
+                </div>
+                <div class="answer-text">
+                    
+                    <!-- Canvas Visualization for Question 3 -->
+                    <div class="canvas-container">
+                        <h5><i class="fas fa-draw-polygon text-primary"></i> Analog vs Digital Signals</h5>
+                        <canvas id="analogDigitalCanvas" class="interactive-canvas" width="800" height="400"></canvas>
+                        <div class="canvas-controls">
+                            <button class="canvas-btn" onclick="showAnalogSignal()">
+                                <i class="fas fa-wave-square"></i> Analog Signal
+                            </button>
+                            <button class="canvas-btn" onclick="showDigitalSignal()">
+                                <i class="fas fa-square"></i> Digital Signal
+                            </button>
+                            <button class="canvas-btn" onclick="compareSignals()">
+                                <i class="fas fa-balance-scale"></i> Compare Both
+                            </button>
+                            <button class="canvas-btn" onclick="addNoise()">
+                                <i class="fas fa-random"></i> Add Noise Effect
+                            </button>
+                        </div>
+                        <div class="canvas-description">
+                            Explore the differences between analog and digital signals and see how noise affects each type
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Analog Communication:</h6>
+                            <ul>
+                                <li>Continuous signals varying smoothly over time</li>
+                                <li>Natural representation of real-world signals</li>
+                                <li>Simple implementation</li>
+                                <li>Susceptible to noise accumulation</li>
+                                <li>Examples: <span class="telecom-tooltip" data-tooltip="Amplitude Modulation - Analog modulation technique">AM</span>/<span class="telecom-tooltip" data-tooltip="Frequency Modulation - Analog modulation technique">FM</span> radio, analog TV</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Digital Communication:</h6>
+                            <ul>
+                                <li>Discrete signals (binary digits: 0s and 1s)</li>
+                                <li>Noise immunity and error correction</li>
+                                <li>Encryption and security capabilities</li>
+                                <li>Requires ADC/DAC conversion</li>
+                                <li>Examples: Digital TV, internet, mobile data</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h6>Key Performance Metrics:</h6>
+                    <ul>
+                        <li><strong>Bandwidth:</strong> Range of frequencies required</li>
+                        <li><strong>Signal-to-Noise Ratio (<span class="telecom-tooltip" data-tooltip="Signal-to-Noise Ratio - Measure of signal quality">SNR</span>):</strong> Quality measure</li>
+                        <li><strong>Bit Error Rate (<span class="telecom-tooltip" data-tooltip="Bit Error Rate - Measure of transmission accuracy">BER</span>):</strong> Transmission accuracy (digital)</li>
+                        <li><strong>Latency:</strong> Time delay in transmission</li>
+                        <li><strong>Throughput:</strong> Data transmission rate</li>
+                    </ul>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card mt-4">
+                    <h4><i class="fas fa-video text-primary"></i> Question 4: Communication Types</h4>
+                    <p><strong>Describe the main types of communication (voice, data, video, multimedia) and explain how network topology influences their transmission.</strong></p>
+                </div>
+                <div class="answer-text">
+                    
+                    <!-- Canvas Visualization for Question 4 -->
+                    <div class="canvas-container">
+                        <h5><i class="fas fa-draw-polygon text-primary"></i> Communication Types Visualization</h5>
+                        <canvas id="communicationTypesCanvas" class="interactive-canvas" width="800" height="500"></canvas>
+                        <div class="canvas-controls">
+                            <button class="canvas-btn" onclick="showVoiceComm()">
+                                <i class="fas fa-microphone"></i> Voice
+                            </button>
+                            <button class="canvas-btn" onclick="showDataComm()">
+                                <i class="fas fa-database"></i> Data
+                            </button>
+                            <button class="canvas-btn" onclick="showVideoComm()">
+                                <i class="fas fa-video"></i> Video
+                            </button>
+                            <button class="canvas-btn" onclick="showMultimediaComm()">
+                                <i class="fas fa-play-circle"></i> Multimedia
+                            </button>
+                        </div>
+                        <div class="canvas-description">
+                            Click on each communication type to see its characteristics and bandwidth requirements
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Voice Communication:</h6>
+                            <ul>
+                                <li>Real-time processing</li>
+                                <li>Low latency required</li>
+                                <li>64 <span class="telecom-tooltip" data-tooltip="Kilobits per second - Data rate measurement">kbps</span> bandwidth</li>
+                                <li>Examples: <span class="telecom-tooltip" data-tooltip="Voice over Internet Protocol - Technology for voice calls over internet">VoIP</span>, telephony</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6>Data Communication:</h6>
+                            <ul>
+                                <li>Error-free transmission</li>
+                                <li>Variable bandwidth</li>
+                                <li>Some latency tolerance</li>
+                                <li>Examples: Email, web browsing</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6>Video Communication:</h6>
+                            <ul>
+                                <li>High bandwidth (<span class="telecom-tooltip" data-tooltip="Megabits per second - Data rate measurement">Mbps</span>+)</li>
+                                <li>Synchronization critical</li>
+                                <li>Real-time processing</li>
+                                <li>Examples: Streaming, video calls</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6>Multimedia:</h6>
+                            <ul>
+                                <li>Multiple media integration</li>
+                                <li><span class="telecom-tooltip" data-tooltip="Quality of Service - Network traffic prioritization and management">QoS</span> management</li>
+                                <li>Synchronization between types</li>
+                                <li>Examples: Video conferencing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card mt-4">
+                    <h4><i class="fas fa-network-wired text-primary"></i> Question 5: Network Topologies</h4>
+                    <p><strong>How do different network topologies impact performance, reliability, and scalability of communication systems?</strong></p>
+                </div>
+                <div class="answer-text">
+                    
+                    <!-- Canvas Visualization for Question 5 -->
+                    <div class="canvas-container">
+                        <h5><i class="fas fa-draw-polygon text-primary"></i> Interactive Network Topologies</h5>
+                        <canvas id="networkTopologyCanvas" class="interactive-canvas" width="800" height="600"></canvas>
+                        <div class="canvas-controls">
+                            <button class="canvas-btn" onclick="drawStarTopology()">
+                                <i class="fas fa-star"></i> Star
+                            </button>
+                            <button class="canvas-btn" onclick="drawMeshTopology()">
+                                <i class="fas fa-project-diagram"></i> Mesh
+                            </button>
+                            <button class="canvas-btn" onclick="drawRingTopology()">
+                                <i class="fas fa-circle-notch"></i> Ring
+                            </button>
+                            <button class="canvas-btn" onclick="drawBusTopology()">
+                                <i class="fas fa-minus"></i> Bus
+                            </button>
+                            <button class="canvas-btn" onclick="simulateDataFlow()">
+                                <i class="fas fa-play"></i> Simulate Data Flow
+                            </button>
+                        </div>
+                        <div class="canvas-description">
+                            Click on each topology to see its structure and then simulate data flow to understand performance characteristics
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Star Topology:</h6>
+                            <ul>
+                                <li><strong>Performance:</strong> High individual performance, potential hub bottleneck</li>
+                                <li><strong>Reliability:</strong> Single point of failure (hub)</li>
+                                <li><strong>Scalability:</strong> Easy to add nodes, limited by hub capacity</li>
+                                <li><strong>Applications:</strong> <span class="telecom-tooltip" data-tooltip="Local Area Networks - Computer networks covering small geographic areas">LANs</span>, <span class="telecom-tooltip" data-tooltip="Wireless Fidelity - Wireless local area networking technology">Wi-Fi</span> networks</li>
+                            </ul>
+                            
+                            <h6>Ring Topology:</h6>
+                            <ul>
+                                <li><strong>Performance:</strong> Predictable, equal access</li>
+                                <li><strong>Reliability:</strong> Single break affects all</li>
+                                <li><strong>Scalability:</strong> Moderate, affects all nodes</li>
+                                <li><strong>Applications:</strong> <span class="telecom-tooltip" data-tooltip="Synchronous Optical Network / Synchronous Digital Hierarchy - Fiber optic network standards">SONET/SDH</span> networks</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Mesh Topology:</h6>
+                            <ul>
+                                <li><strong>Performance:</strong> Multiple paths, optimal routing</li>
+                                <li><strong>Reliability:</strong> Excellent redundancy</li>
+                                <li><strong>Scalability:</strong> Complex scaling, expensive</li>
+                                <li><strong>Applications:</strong> Internet backbone</li>
+                            </ul>
+                            
+                            <h6>Bus Topology:</h6>
+                            <ul>
+                                <li><strong>Performance:</strong> Shared bandwidth, degradation</li>
+                                <li><strong>Reliability:</strong> Cable failure affects all</li>
+                                <li><strong>Scalability:</strong> Limited by physical constraints</li>
+                                <li><strong>Applications:</strong> Legacy systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner-border mb-3" role="status"></div>
+            <h4>Processing Analysis...</h4>
+            <p>Generating telecommunications data and visualizations</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Enhanced Topology Animations Fix -->
+    <script src="/static/js/topology_animations.js"></script>
+    <!-- Extended Telecommunications Acronym Database -->
+    <script src="/static/js/extended_acronyms.js"></script>
+    <!-- Telecommunications Tooltips System -->
+    <script src="/static/js/telecom_tooltips.js"></script>
+    <!-- Tooltip Analytics System -->
+    <script src="/static/js/tooltip_analytics.js"></script>
+    <!-- Advanced Tooltip Enhancements -->
+    <script src="/static/js/tooltip_enhancements.js"></script>
+    
+    <script>
+        // Update slider values in real-time
+        document.getElementById('num-bits').oninput = function() {
+            document.getElementById('bits-value').textContent = this.value;
+        };
+        
+        document.getElementById('noise-level').oninput = function() {
+            document.getElementById('noise-value').textContent = this.value;
+        };
+        
+        // Path loss slider updates
+        document.getElementById('max-distance').oninput = function() {
+            document.getElementById('distance-value').textContent = this.value;
+        };
+        
+        document.getElementById('tx-power').oninput = function() {
+            document.getElementById('power-value').textContent = this.value;
+        };
+
+        // Generate signals function
+        async function generateSignals() {
+            const numBits = document.getElementById('num-bits').value;
+            const modulation = document.getElementById('modulation-select').value;
+            const noiseLevel = document.getElementById('noise-level').value;
+            
+            // Show loading
+            document.getElementById('signal-loading').style.display = 'block';
+            document.getElementById('signal-results').innerHTML = '';
+            
+            try {
+                const response = await fetch('/generate_signals', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        num_bits: parseInt(numBits),
+                        modulation: modulation,
+                        noise_level: parseFloat(noiseLevel)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('signal-results').innerHTML = `
+                        <div class="mb-3">
+                            <h4>${modulation} Signal Analysis Results</h4>
+                            <div class="row text-start">
+                                <div class="col-md-3">
+                                    <strong>Bits Processed:</strong> ${data.result.bits.length}
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Modulation:</strong> ${data.result.modulation}
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Samples:</strong> ${data.result.samples.toLocaleString()}
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>SNR:</strong> ${data.result.snr_db.toFixed(1)} dB
+                                </div>
+                            </div>
+                        </div>
+                        <img src="data:image/png;base64,${data.plot}" class="img-fluid" alt="Signal Analysis">
+                    `;
+                    
+                    // Update performance metrics
+                    updateMetrics(data.result);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('signal-results').innerHTML = 
+                    '<div class="alert alert-danger">Error generating signals. Please try again.</div>';
+            } finally {
+                document.getElementById('signal-loading').style.display = 'none';
+            }
+        }
+
+        // Show constellation diagram
+        async function showConstellation(modulation) {
+            // Remove active class from all cards
+            document.querySelectorAll('.modulation-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to clicked card
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('constellation-loading').style.display = 'block';
+            document.getElementById('constellation-results').innerHTML = '';
+            
+            try {
+                const response = await fetch(`/constellation/${modulation}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('constellation-results').innerHTML = `
+                        <div class="mb-3">
+                            <h4>${data.modulation} Constellation Diagram</h4>
+                            <p class="text-muted">Signal points in the I-Q plane showing the digital modulation scheme</p>
+                        </div>
+                        <img src="data:image/png;base64,${data.plot}" class="img-fluid" alt="${data.modulation} Constellation">
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('constellation-results').innerHTML = 
+                    '<div class="alert alert-danger">Error generating constellation diagram.</div>';
+            } finally {
+                document.getElementById('constellation-loading').style.display = 'none';
+            }
+        }
+
+        // Show performance analysis
+        async function showPerformanceAnalysis() {
+            document.getElementById('performance-results').innerHTML = 
+                '<div class="text-center p-4"><div class="spinner-border"></div><div class="mt-2">Generating performance analysis...</div></div>';
+            
+            try {
+                const response = await fetch('/performance_analysis');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('performance-results').innerHTML = `
+                        <div class="mb-3">
+                            <h4>BER vs SNR Performance Analysis</h4>
+                            <p class="text-muted">Theoretical bit error rate performance for different modulation schemes</p>
+                        </div>
+                        <img src="data:image/png;base64,${data.plot}" class="img-fluid" alt="Performance Analysis">
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('performance-results').innerHTML = 
+                    '<div class="alert alert-danger">Error generating performance analysis.</div>';
+            }
+        }
+
+        // Show 5G comparison
+        async function show5GComparison() {
+            document.getElementById('5g-results').innerHTML = 
+                '<div class="text-center p-4"><div class="spinner-border"></div><div class="mt-2">Generating 5G analysis...</div></div>';
+            
+            try {
+                const response = await fetch('/5g_comparison');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('5g-results').innerHTML = `
+                        <div class="mb-3">
+                            <h4>5G Technology Evolution Analysis</h4>
+                            <p class="text-muted">Comparison of wireless technology generations showing throughput and latency improvements</p>
+                        </div>
+                        <img src="data:image/png;base64,${data.plot}" class="img-fluid" alt="5G Analysis">
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('5g-results').innerHTML = 
+                    '<div class="alert alert-danger">Error generating 5G analysis.</div>';
+            }
+        }
+
+        // Show topology
+        async function showTopology(topology) {
+            // Update button states
+            document.querySelectorAll('.topology-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('topology-results').innerHTML = 
+                '<div class="text-center p-4"><div class="spinner-border"></div><div class="mt-2">Generating topology diagram...</div></div>';
+            
+            try {
+                const response = await fetch(`/network_topology/${topology}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const topologyInfo = {
+                        'star': 'Centralized architecture with hub-based connectivity',
+                        'mesh': 'Fully connected network with maximum redundancy',
+                        'ring': 'Circular network topology with token-based access'
+                    };
+                    
+                    document.getElementById('topology-results').innerHTML = `
+                        <div class="mb-3">
+                            <h4>${topology.charAt(0).toUpperCase() + topology.slice(1)} Network Topology</h4>
+                            <p class="text-muted">${topologyInfo[topology]}</p>
+                        </div>
+                        <img src="data:image/png;base64,${data.plot}" class="img-fluid" alt="${topology} Topology">
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('topology-results').innerHTML = 
+                    '<div class="alert alert-danger">Error generating topology diagram.</div>';
+            }
+        }
+
+        // Update performance metrics
+        function updateMetrics(result) {
+            const spectralEfficiency = {
+                'BPSK': 1,
+                'QPSK': 2,
+                '16-QAM': 4
+            };
+            
+            document.getElementById('current-ber').textContent = '10⁻⁶';
+            document.getElementById('current-snr').textContent = result.snr_db.toFixed(1);
+            document.getElementById('spectral-efficiency').textContent = 
+                spectralEfficiency[result.modulation] || 1;
+            document.getElementById('throughput').textContent = 
+                (spectralEfficiency[result.modulation] * 20 || 20);
+        }
+
+        // Download results function
+        function downloadResults() {
+            // Create a summary of current analysis
+            const summary = {
+                timestamp: new Date().toISOString(),
+                parameters: {
+                    modulation: document.getElementById('modulation-select').value,
+                    bits: document.getElementById('num-bits').value,
+                    noise: document.getElementById('noise-level').value
+                },
+                analysis: 'Telecommunications Laboratory Results'
+            };
+            
+            const blob = new Blob([JSON.stringify(summary, null, 2)], 
+                {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'telecom_lab_results.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // =================================================================
+        // FREE-SPACE PATH LOSS ANALYSIS FUNCTIONS
+        // =================================================================
+
+        // Calculate free-space path loss
+        function calculateFSPL(distance, frequency) {
+            // FSPL(dB) = 20*log10(d) + 20*log10(f) + 20*log10(4π/c)
+            // Where d = distance in meters, f = frequency in Hz, c = speed of light
+            const c = 299792458; // speed of light in m/s
+            const frequencyHz = frequency * 1e9; // Convert GHz to Hz
+            
+            const fspl = 20 * Math.log10(distance) + 
+                        20 * Math.log10(frequencyHz) + 
+                        20 * Math.log10(4 * Math.PI / c);
+            
+            return fspl;
+        }
+
+        // Generate path loss chart
+        async function generatePathLossChart() {
+            const maxDistance = parseInt(document.getElementById('max-distance').value);
+            const txPower = parseInt(document.getElementById('tx-power').value);
+            const frequency = parseFloat(document.getElementById('frequency').value);
+            
+            // Show loading
+            document.getElementById('pathloss-loading').style.display = 'block';
+            document.getElementById('pathloss-results').innerHTML = '';
+            
+            try {
+                // Generate distance points for the chart
+                const distances = [];
+                const pathLosses = [];
+                const receivedPowers = [];
+                
+                const numPoints = 100;
+                for (let i = 1; i <= numPoints; i++) {
+                    const distance = (maxDistance / numPoints) * i;
+                    const fspl = calculateFSPL(distance, frequency);
+                    const receivedPower = txPower - fspl;
+                    
+                    distances.push(distance);
+                    pathLosses.push(fspl);
+                    receivedPowers.push(receivedPower);
+                }
+                
+                // Create chart HTML
+                const chartHtml = `
+                    <div class="mb-3">
+                        <h4>Free-Space Path Loss Analysis at ${frequency} GHz</h4>
+                        <div class="row text-start mb-3">
+                            <div class="col-md-3">
+                                <strong>Frequency:</strong> ${frequency} GHz
+                            </div>
+                            <div class="col-md-3">
+                                <strong>TX Power:</strong> ${txPower} dBm
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Max Distance:</strong> ${maxDistance} m
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Path Loss @ ${maxDistance}m:</strong> ${calculateFSPL(maxDistance, frequency).toFixed(1)} dB
+                            </div>
+                        </div>
+                    </div>
+                    <canvas id="pathLossChart" width="800" height="400" style="max-width: 100%; border: 2px solid var(--accent-color); border-radius: 8px;"></canvas>
+                    <div class="mt-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="highlight-box">
+                                    <strong>Key Insights:</strong><br>
+                                    • Path loss increases with distance and frequency<br>
+                                    • Doubling distance adds ~6 dB loss<br>
+                                    • Higher frequencies have greater attenuation<br>
+                                    • Free-space assumes ideal conditions (no obstacles)
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="highlight-box">
+                                    <strong>Practical Applications:</strong><br>
+                                    • WiFi coverage planning<br>
+                                    • Cellular network design<br>
+                                    • Satellite communication links<br>
+                                    • Line-of-sight radio systems
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('pathloss-results').innerHTML = chartHtml;
+                
+                // Draw the chart
+                drawPathLossChart(distances, pathLosses, receivedPowers, frequency, txPower);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('pathloss-results').innerHTML = 
+                    '<div class="alert alert-danger">Error generating path loss chart. Please try again.</div>';
+            } finally {
+                document.getElementById('pathloss-loading').style.display = 'none';
+            }
+        }
+
+        // Draw path loss chart on canvas
+        function drawPathLossChart(distances, pathLosses, receivedPowers, frequency, txPower) {
+            const canvas = document.getElementById('pathLossChart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Chart margins
+            const margin = { top: 40, right: 80, bottom: 60, left: 80 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+            
+            // Find data ranges
+            const maxDistance = Math.max(...distances);
+            const maxPathLoss = Math.max(...pathLosses);
+            const minReceivedPower = Math.min(...receivedPowers);
+            
+            // Draw grid and axes
+            ctx.strokeStyle = '#E0E0E0';
+            ctx.lineWidth = 1;
+            
+            // Vertical grid lines
+            for (let i = 0; i <= 10; i++) {
+                const x = margin.left + (chartWidth / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, margin.top);
+                ctx.lineTo(x, margin.top + chartHeight);
+                ctx.stroke();
+            }
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 10; i++) {
+                const y = margin.top + (chartHeight / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(margin.left, y);
+                ctx.lineTo(margin.left + chartWidth, y);
+                ctx.stroke();
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(margin.left, margin.top + chartHeight);
+            ctx.lineTo(margin.left + chartWidth, margin.top + chartHeight);
+            ctx.stroke();
+            
+            // Y-axis (left)
+            ctx.beginPath();
+            ctx.moveTo(margin.left, margin.top);
+            ctx.lineTo(margin.left, margin.top + chartHeight);
+            ctx.stroke();
+            
+            // Y-axis (right)
+            ctx.beginPath();
+            ctx.moveTo(margin.left + chartWidth, margin.top);
+            ctx.lineTo(margin.left + chartWidth, margin.top + chartHeight);
+            ctx.stroke();
+            
+            // Draw path loss curve (red)
+            ctx.strokeStyle = '#F44336';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let i = 0; i < distances.length; i++) {
+                const x = margin.left + (distances[i] / maxDistance) * chartWidth;
+                const y = margin.top + chartHeight - (pathLosses[i] / maxPathLoss) * chartHeight;
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+            
+            // Draw received power curve (blue)
+            ctx.strokeStyle = '#2196F3';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const powerRange = txPower - minReceivedPower;
+            for (let i = 0; i < distances.length; i++) {
+                const x = margin.left + (distances[i] / maxDistance) * chartWidth;
+                const y = margin.top + chartHeight - ((receivedPowers[i] - minReceivedPower) / powerRange) * chartHeight;
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+            
+            // Add labels
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            
+            // Title
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText(`Free-Space Path Loss at ${frequency} GHz`, width / 2, 25);
+            
+            // X-axis label
+            ctx.font = '14px Arial';
+            ctx.fillText('Distance (meters)', width / 2, height - 20);
+            
+            // Y-axis labels
+            ctx.save();
+            ctx.translate(20, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Path Loss (dB) / Received Power (dBm)', 0, 0);
+            ctx.restore();
+            
+            // Legend
+            ctx.fillStyle = '#F44336';
+            ctx.fillRect(width - 150, 50, 20, 3);
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Path Loss (dB)', width - 120, 55);
+            
+            ctx.fillStyle = '#2196F3';
+            ctx.fillRect(width - 150, 70, 20, 3);
+            ctx.fillStyle = '#333';
+            ctx.fillText('Received Power (dBm)', width - 120, 75);
+            
+            // Add distance markers
+            ctx.fillStyle = '#666';
+            ctx.font = '10px Arial';
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= 5; i++) {
+                const distance = (maxDistance / 5) * i;
+                const x = margin.left + (distance / maxDistance) * chartWidth;
+                ctx.fillText(distance.toFixed(0), x, height - 30);
+            }
+        }
+
+        // Show path loss table
+        function showPathLossTable() {
+            const maxDistance = parseInt(document.getElementById('max-distance').value);
+            const txPower = parseInt(document.getElementById('tx-power').value);
+            const frequency = parseFloat(document.getElementById('frequency').value);
+            
+            const distances = [1, 10, 50, 100, 500, 1000, 2000, 5000];
+            let tableHtml = `
+                <div class="mb-3">
+                    <h4>Path Loss Distance Table - ${frequency} GHz</h4>
+                    <p class="text-muted">Transmitter Power: ${txPower} dBm</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Distance (m)</th>
+                                <th>Path Loss (dB)</th>
+                                <th>Received Power (dBm)</th>
+                                <th>Signal Strength</th>
+                                <th>Typical Application</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            distances.forEach(distance => {
+                if (distance <= maxDistance) {
+                    const pathLoss = calculateFSPL(distance, frequency);
+                    const receivedPower = txPower - pathLoss;
+                    
+                    let signalStrength, application;
+                    if (receivedPower > -30) {
+                        signalStrength = '<span class="badge bg-success">Excellent</span>';
+                        application = 'Close-range, high-speed data';
+                    } else if (receivedPower > -50) {
+                        signalStrength = '<span class="badge bg-info">Very Good</span>';
+                        application = 'Indoor WiFi, Bluetooth';
+                    } else if (receivedPower > -70) {
+                        signalStrength = '<span class="badge bg-warning">Good</span>';
+                        application = 'Standard WiFi range';
+                    } else if (receivedPower > -85) {
+                        signalStrength = '<span class="badge bg-danger">Weak</span>';
+                        application = 'Edge of WiFi coverage';
+                    } else {
+                        signalStrength = '<span class="badge bg-dark">Very Weak</span>';
+                        application = 'Long-range, low data rate';
+                    }
+                    
+                    tableHtml += `
+                        <tr>
+                            <td><strong>${distance}</strong></td>
+                            <td>${pathLoss.toFixed(1)}</td>
+                            <td>${receivedPower.toFixed(1)}</td>
+                            <td>${signalStrength}</td>
+                            <td>${application}</td>
+                        </tr>
+                    `;
+                }
+            });
+            
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Note:</strong> These calculations assume ideal free-space conditions. 
+                    Real-world conditions include obstacles, reflections, and atmospheric effects that increase path loss.
+                </div>
+            `;
+            
+            document.getElementById('pathloss-results').innerHTML = tableHtml;
+        }
+
+        // =================================================================
+        // TELECOMMUNICATIONS TOOLTIPS INITIALIZATION
+        // =================================================================
+        
+        // Initialize tooltips when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Telecommunications tooltips loaded successfully!');
+            
+            // Count and log the number of tooltips
+            const tooltips = document.querySelectorAll('.telecom-tooltip');
+            console.log(`Found ${tooltips.length} telecommunications tooltips`);
+            
+            // Add accessibility improvements
+            tooltips.forEach(tooltip => {
+                tooltip.setAttribute('role', 'button');
+                tooltip.setAttribute('tabindex', '0');
+                tooltip.setAttribute('aria-label', tooltip.getAttribute('data-tooltip'));
+            });
+        });
+
+        // =================================================================
+        // CANVAS DRAWING FUNCTIONS FOR INTERACTIVE Q&A VISUALIZATIONS
+        // =================================================================
+
+        // Question 1: System Overview Canvas
+        function animateSystemOverview() {
+            const canvas = document.getElementById('systemOverviewCanvas');
+            const ctx = canvas.getContext('2d');
+            let animationFrame = 0;
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw system components
+                drawSystemComponent(ctx, 100, 150, 120, 60, 'Data Source', '#E3F2FD');
+                drawSystemComponent(ctx, 300, 150, 120, 60, 'Transmitter', '#F1F8E9');
+                drawSystemComponent(ctx, 500, 150, 120, 60, 'Channel', '#FFEBEE');
+                drawSystemComponent(ctx, 700, 150, 120, 60, 'Receiver', '#F3E5F5');
+                
+                // Draw animated data flow
+                const progress = (animationFrame % 200) / 200;
+                drawDataFlow(ctx, progress);
+                
+                // Draw arrows
+                drawArrow(ctx, 220, 180, 280, 180);
+                drawArrow(ctx, 420, 180, 480, 180);
+                drawArrow(ctx, 620, 180, 680, 180);
+                
+                animationFrame++;
+                if (animationFrame < 400) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            animate();
+        }
+
+        function showSystemComponents() {
+            const canvas = document.getElementById('systemOverviewCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw detailed system components
+            drawSystemComponent(ctx, 100, 100, 140, 80, 'Data Source\n• Text\n• Voice\n• Video', '#E3F2FD');
+            drawSystemComponent(ctx, 280, 100, 140, 80, 'Transmitter\n• Encoding\n• Modulation\n• Amplification', '#F1F8E9');
+            drawSystemComponent(ctx, 460, 100, 140, 80, 'Channel\n• Wired/Wireless\n• Noise\n• Attenuation', '#FFEBEE');
+            drawSystemComponent(ctx, 640, 100, 140, 80, 'Receiver\n• Demodulation\n• Decoding\n• Output', '#F3E5F5');
+            
+            // Draw connections
+            drawArrow(ctx, 240, 140, 270, 140);
+            drawArrow(ctx, 420, 140, 450, 140);
+            drawArrow(ctx, 600, 140, 630, 140);
+        }
+
+        // Question 2: Communication Components Canvas
+        function showTransmitter() {
+            const canvas = document.getElementById('componentsCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw transmitter details
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('TRANSMITTER COMPONENTS', 250, 40);
+            
+            // Input signal
+            drawWaveform(ctx, 50, 80, 150, 40, '#4CAF50', 'Input Signal');
+            
+            // Processing blocks
+            drawProcessingBlock(ctx, 250, 70, 120, 60, 'Encoder\n(Source Coding)', '#FF9800');
+            drawProcessingBlock(ctx, 250, 150, 120, 60, 'Modulator\n(Carrier Mod)', '#F44336');
+            drawProcessingBlock(ctx, 250, 230, 120, 60, 'Amplifier\n(Power Boost)', '#9C27B0');
+            drawProcessingBlock(ctx, 250, 310, 120, 60, 'Filter\n(Band Limiting)', '#00BCD4');
+            
+            // Output
+            drawWaveform(ctx, 450, 200, 150, 40, '#FF5722', 'RF Output');
+            
+            // Arrows
+            drawArrow(ctx, 200, 100, 240, 100);
+            drawArrow(ctx, 310, 130, 310, 140);
+            drawArrow(ctx, 310, 210, 310, 220);
+            drawArrow(ctx, 310, 290, 310, 300);
+            drawArrow(ctx, 370, 220, 440, 220);
+        }
+
+        function showChannel() {
+            const canvas = document.getElementById('componentsCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('CHANNEL CHARACTERISTICS', 250, 40);
+            
+            // Draw channel with noise sources
+            drawChannelPath(ctx, 100, 200, 600, 40);
+            
+            // Noise sources
+            drawNoiseSource(ctx, 200, 120, 'Thermal Noise');
+            drawNoiseSource(ctx, 350, 120, 'Interference');
+            drawNoiseSource(ctx, 500, 120, 'Multipath');
+            
+            // Channel types
+            drawChannelType(ctx, 150, 280, 'Wired\n• Fiber Optic\n• Coaxial\n• Twisted Pair');
+            drawChannelType(ctx, 450, 280, 'Wireless\n• Radio Waves\n• Microwaves\n• Satellite');
+        }
+
+        function showReceiver() {
+            const canvas = document.getElementById('componentsCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('RECEIVER COMPONENTS', 250, 40);
+            
+            // Input signal with noise
+            drawWaveform(ctx, 50, 80, 150, 40, '#FF5722', 'Received Signal\n(with noise)');
+            
+            // Processing blocks (reverse order)
+            drawProcessingBlock(ctx, 250, 70, 120, 60, 'Filter\n(Noise Removal)', '#00BCD4');
+            drawProcessingBlock(ctx, 250, 150, 120, 60, 'Amplifier\n(Signal Boost)', '#9C27B0');
+            drawProcessingBlock(ctx, 250, 230, 120, 60, 'Demodulator\n(Carrier Removal)', '#F44336');
+            drawProcessingBlock(ctx, 250, 310, 120, 60, 'Decoder\n(Error Correction)', '#FF9800');
+            
+            // Clean output
+            drawWaveform(ctx, 450, 200, 150, 40, '#4CAF50', 'Clean Output');
+            
+            // Arrows
+            drawArrow(ctx, 200, 100, 240, 100);
+            drawArrow(ctx, 310, 130, 310, 140);
+            drawArrow(ctx, 310, 210, 310, 220);
+            drawArrow(ctx, 310, 290, 310, 300);
+            drawArrow(ctx, 370, 220, 440, 220);
+        }
+
+        function showCompleteSystem() {
+            const canvas = document.getElementById('componentsCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw complete system flow
+            drawSystemComponent(ctx, 80, 180, 100, 60, 'TX', '#F1F8E9');
+            drawSystemComponent(ctx, 350, 180, 100, 60, 'Channel', '#FFEBEE');
+            drawSystemComponent(ctx, 620, 180, 100, 60, 'RX', '#F3E5F5');
+            
+            // Signal representations
+            drawSignalPath(ctx, 180, 200, 170, 'Modulated');
+            drawSignalPath(ctx, 450, 200, 170, 'Noisy');
+            
+            // Noise addition
+            drawNoiseAddition(ctx, 350, 120);
+        }
+
+        // Question 3: Analog vs Digital Canvas
+        function showAnalogSignal() {
+            const canvas = document.getElementById('analogDigitalCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('ANALOG SIGNAL', 320, 30);
+            
+            // Draw smooth sinusoidal wave
+            drawAnalogWave(ctx, 50, 150, 700, 100);
+            
+            // Characteristics
+            drawCharacteristic(ctx, 100, 300, 'Continuous Values');
+            drawCharacteristic(ctx, 300, 300, 'Smooth Transitions');
+            drawCharacteristic(ctx, 500, 300, 'Infinite Resolution');
+            
+            // Examples
+            ctx.fillStyle = '#666';
+            ctx.font = '16px Arial';
+            ctx.fillText('Examples: AM/FM Radio, Analog TV, Vinyl Records', 200, 350);
+        }
+
+        function showDigitalSignal() {
+            const canvas = document.getElementById('analogDigitalCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('DIGITAL SIGNAL', 320, 30);
+            
+            // Draw square wave (digital pulses)
+            drawDigitalWave(ctx, 50, 150, 700, 100);
+            
+            // Characteristics
+            drawCharacteristic(ctx, 100, 300, 'Discrete Values (0,1)');
+            drawCharacteristic(ctx, 300, 300, 'Sharp Transitions');
+            drawCharacteristic(ctx, 500, 300, 'Noise Immunity');
+            
+            // Examples
+            ctx.fillStyle = '#666';
+            ctx.font = '16px Arial';
+            ctx.fillText('Examples: Digital TV, Internet, CD/DVD, Mobile Data', 200, 350);
+        }
+
+        function compareSignals() {
+            const canvas = document.getElementById('analogDigitalCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('ANALOG vs DIGITAL COMPARISON', 250, 30);
+            
+            // Analog (top half)
+            ctx.fillStyle = '#FF5722';
+            ctx.font = '16px Arial';
+            ctx.fillText('Analog Signal', 100, 70);
+            drawAnalogWave(ctx, 50, 80, 350, 60);
+            
+            // Digital (bottom half)
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '16px Arial';
+            ctx.fillText('Digital Signal', 450, 70);
+            drawDigitalWave(ctx, 450, 80, 300, 60);
+            
+            // Comparison table
+            drawComparisonTable(ctx, 50, 200);
+        }
+
+        function addNoise() {
+            const canvas = document.getElementById('analogDigitalCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('EFFECT OF NOISE ON SIGNALS', 250, 30);
+            
+            // Analog with noise
+            ctx.fillStyle = '#FF5722';
+            ctx.font = '16px Arial';
+            ctx.fillText('Analog + Noise (Degraded)', 50, 70);
+            drawNoisyAnalogWave(ctx, 50, 80, 350, 60);
+            
+            // Digital with noise (still recoverable)
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '16px Arial';
+            ctx.fillText('Digital + Noise (Recoverable)', 450, 70);
+            drawNoisyDigitalWave(ctx, 450, 80, 300, 60);
+            
+            // Explanation
+            ctx.fillStyle = '#666';
+            ctx.font = '14px Arial';
+            ctx.fillText('Analog signals degrade continuously with noise', 50, 200);
+            ctx.fillText('Digital signals can be recovered if noise is below threshold', 450, 200);
+        }
+
+        // Question 4: Communication Types Canvas
+        function showVoiceComm() {
+            const canvas = document.getElementById('communicationTypesCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawCommunicationType(ctx, 'VOICE COMMUNICATION', '#4CAF50', {
+                bandwidth: '64 kbps',
+                latency: '< 150ms',
+                reliability: 'Medium',
+                examples: 'VoIP, Telephony, Walkie-talkie'
+            });
+            
+            // Draw voice waveform
+            drawVoiceWaveform(ctx, 100, 200, 600, 80);
+        }
+
+        function showDataComm() {
+            const canvas = document.getElementById('communicationTypesCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawCommunicationType(ctx, 'DATA COMMUNICATION', '#2196F3', {
+                bandwidth: 'Variable',
+                latency: 'Tolerant',
+                reliability: 'High',
+                examples: 'Email, Web, File Transfer, Database'
+            });
+            
+            // Draw data packets
+            drawDataPackets(ctx, 100, 200, 600, 80);
+        }
+
+        function showVideoComm() {
+            const canvas = document.getElementById('communicationTypesCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawCommunicationType(ctx, 'VIDEO COMMUNICATION', '#FF9800', {
+                bandwidth: '1-100 Mbps',
+                latency: '< 400ms',
+                reliability: 'Medium-High',
+                examples: 'Streaming, Video Calls, Broadcast TV'
+            });
+            
+            // Draw video frames
+            drawVideoFrames(ctx, 100, 200, 600, 150);
+        }
+
+        function showMultimediaComm() {
+            const canvas = document.getElementById('communicationTypesCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawCommunicationType(ctx, 'MULTIMEDIA COMMUNICATION', '#9C27B0', {
+                bandwidth: '10-1000 Mbps',
+                latency: 'Variable',
+                reliability: 'High',
+                examples: 'Video Conferencing, Gaming, VR/AR'
+            });
+            
+            // Draw multimedia integration
+            drawMultimediaIntegration(ctx, 100, 200, 600, 150);
+        }
+
+        // Question 5: Network Topology Canvas
+        let currentTopology = null;
+
+        function drawStarTopology() {
+            const canvas = document.getElementById('networkTopologyCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            currentTopology = 'star';
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('STAR TOPOLOGY', 300, 30);
+            
+            // Central hub
+            drawNode(ctx, 400, 300, 40, 'HUB', '#FFD700', true);
+            
+            // Surrounding nodes
+            const positions = [
+                {x: 400, y: 150, label: 'PC1'},
+                {x: 550, y: 200, label: 'PC2'},
+                {x: 550, y: 400, label: 'PC3'},
+                {x: 400, y: 450, label: 'PC4'},
+                {x: 250, y: 400, label: 'PC5'},
+                {x: 250, y: 200, label: 'PC6'}
+            ];
+            
+            positions.forEach((pos, i) => {
+                drawNode(ctx, pos.x, pos.y, 25, pos.label, '#42A5F5');
+                drawConnection(ctx, 400, 300, pos.x, pos.y, '#333', 2);
+            });
+            
+            // Characteristics
+            drawTopologyCharacteristics(ctx, 50, 500, [
+                '• Centralized control through hub',
+                '• Easy to add/remove nodes',
+                '• Single point of failure (hub)',
+                '• Dedicated bandwidth per connection'
+            ]);
+        }
+
+        function drawMeshTopology() {
+            const canvas = document.getElementById('networkTopologyCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            currentTopology = 'mesh';
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('MESH TOPOLOGY', 300, 30);
+            
+            // Node positions
+            const positions = [
+                {x: 300, y: 120, label: 'A'},
+                {x: 500, y: 150, label: 'B'},
+                {x: 550, y: 300, label: 'C'},
+                {x: 400, y: 400, label: 'D'},
+                {x: 250, y: 350, label: 'E'},
+                {x: 200, y: 200, label: 'F'}
+            ];
+            
+            // Draw all connections (full mesh)
+            for (let i = 0; i < positions.length; i++) {
+                for (let j = i + 1; j < positions.length; j++) {
+                    drawConnection(ctx, positions[i].x, positions[i].y, 
+                                 positions[j].x, positions[j].y, '#666', 1.5);
+                }
+            }
+            
+            // Draw nodes on top
+            positions.forEach(pos => {
+                drawNode(ctx, pos.x, pos.y, 25, pos.label, '#4CAF50');
+            });
+            
+            // Characteristics
+            drawTopologyCharacteristics(ctx, 50, 480, [
+                '• Multiple paths between nodes',
+                '• Excellent redundancy and reliability',
+                '• Self-healing capabilities',
+                '• Expensive and complex to implement'
+            ]);
+        }
+
+        function drawRingTopology() {
+            const canvas = document.getElementById('networkTopologyCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            currentTopology = 'ring';
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('RING TOPOLOGY', 300, 30);
+            
+            // Ring parameters
+            const centerX = 400, centerY = 280, radius = 120;
+            const nodeCount = 6;
+            const positions = [];
+            
+            // Calculate node positions in circle
+            for (let i = 0; i < nodeCount; i++) {
+                const angle = (i * 2 * Math.PI) / nodeCount - Math.PI/2;
+                positions.push({
+                    x: centerX + radius * Math.cos(angle),
+                    y: centerY + radius * Math.sin(angle),
+                    label: String.fromCharCode(65 + i) // A, B, C, D, E, F
+                });
+            }
+            
+            // Draw ring connections
+            for (let i = 0; i < positions.length; i++) {
+                const current = positions[i];
+                const next = positions[(i + 1) % positions.length];
+                drawDirectionalConnection(ctx, current.x, current.y, next.x, next.y, '#FF9800');
+            }
+            
+            // Draw nodes
+            positions.forEach(pos => {
+                drawNode(ctx, pos.x, pos.y, 25, pos.label, '#FF5722');
+            });
+            
+            // Token indicator
+            drawToken(ctx, positions[0].x, positions[0].y);
+            
+            // Characteristics
+            drawTopologyCharacteristics(ctx, 50, 480, [
+                '• Data flows in one direction (token passing)',
+                '• Equal access for all nodes',
+                '• Single break can isolate segments',
+                '• Predictable performance'
+            ]);
+        }
+
+        function drawBusTopology() {
+            const canvas = document.getElementById('networkTopologyCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            currentTopology = 'bus';
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('BUS TOPOLOGY', 300, 30);
+            
+            // Main bus line
+            drawBusLine(ctx, 150, 300, 500, 8, '#333');
+            
+            // Nodes connected to bus
+            const nodePositions = [200, 300, 400, 500, 600];
+            nodePositions.forEach((x, i) => {
+                // Connection line from bus to node
+                drawConnection(ctx, x, 300, x, 200, '#666', 2);
+                // Node
+                drawNode(ctx, x, 200, 25, `PC${i+1}`, '#9C27B0');
+            });
+            
+            // Terminators
+            drawTerminator(ctx, 150, 300);
+            drawTerminator(ctx, 650, 300);
+            
+            // Characteristics
+            drawTopologyCharacteristics(ctx, 50, 400, [
+                '• Shared communication medium',
+                '• Simple and economical',
+                '• Cable failure affects entire network',
+                '• Performance degrades with more nodes'
+            ]);
+        }
+
+        function simulateDataFlow() {
+            if (!currentTopology) {
+                drawStarTopology(); // Default to star if none selected
+                currentTopology = 'star';
+            }
+            
+            const canvas = document.getElementById('networkTopologyCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Redraw the current topology
+            switch(currentTopology) {
+                case 'star': drawStarTopology(); break;
+                case 'mesh': drawMeshTopology(); break;
+                case 'ring': drawRingTopology(); break;
+                case 'bus': drawBusTopology(); break;
+            }
+            
+            // Add data flow animation
+            animateDataFlow(ctx, currentTopology);
+        }
+
+        // =================================================================
+        // HELPER FUNCTIONS FOR CANVAS DRAWING
+        // =================================================================
+
+        function drawSystemComponent(ctx, x, y, width, height, text, color) {
+            // Draw rounded rectangle
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, width, height);
+            ctx.strokeStyle = '#1565C0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, width, height);
+            
+            // Draw text
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            const lines = text.split('\n');
+            lines.forEach((line, i) => {
+                ctx.fillText(line, x + width/2, y + height/2 + i*16 - (lines.length-1)*8);
+            });
+        }
+
+        function drawDataFlow(ctx, progress) {
+            // Animated data packet moving through system
+            const startX = 100;
+            const endX = 700;
+            const y = 120;
+            
+            const currentX = startX + (endX - startX) * progress;
+            
+            // Draw data packet
+            ctx.fillStyle = '#FF5722';
+            ctx.fillRect(currentX - 10, y - 5, 20, 10);
+            
+            // Data packet label
+            ctx.fillStyle = '#FF5722';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('DATA', currentX, y - 10);
+        }
+
+        function drawArrow(ctx, x1, y1, x2, y2) {
+            ctx.strokeStyle = '#1565C0';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            
+            // Arrowhead
+            const headLength = 10;
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headLength * Math.cos(angle - Math.PI/6), 
+                      y2 - headLength * Math.sin(angle - Math.PI/6));
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headLength * Math.cos(angle + Math.PI/6), 
+                      y2 - headLength * Math.sin(angle + Math.PI/6));
+            ctx.stroke();
+        }
+
+        function drawWaveform(ctx, x, y, width, height, color, label) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let i = 0; i < width; i++) {
+                const waveY = y + height/2 + Math.sin(i * 0.1) * height/3;
+                if (i === 0) ctx.moveTo(x + i, waveY);
+                else ctx.lineTo(x + i, waveY);
+            }
+            ctx.stroke();
+            
+            // Label
+            ctx.fillStyle = color;
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x + width/2, y + height + 20);
+        }
+
+        function drawProcessingBlock(ctx, x, y, width, height, text, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, width, height);
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, width, height);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            const lines = text.split('\n');
+            lines.forEach((line, i) => {
+                ctx.fillText(line, x + width/2, y + height/2 + i*14 - (lines.length-1)*7);
+            });
+        }
+
+        function drawChannelPath(ctx, x, y, width, height) {
+            // Main channel path
+            ctx.fillStyle = '#E0E0E0';
+            ctx.fillRect(x, y, width, height);
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, width, height);
+            
+            // Channel label
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('COMMUNICATION CHANNEL', x + width/2, y + height/2);
+        }
+
+        function drawNoiseSource(ctx, x, y, label) {
+            // Noise cloud
+            ctx.fillStyle = '#FFCDD2';
+            ctx.beginPath();
+            ctx.arc(x, y, 25, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#D32F2F';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Noise label
+            ctx.fillStyle = '#D32F2F';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x, y + 5);
+            
+            // Arrow to channel
+            drawArrow(ctx, x, y + 25, x, 190);
+        }
+
+        function drawChannelType(ctx, x, y, text) {
+            ctx.fillStyle = '#F5F5F5';
+            ctx.fillRect(x - 40, y, 120, 80);
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x - 40, y, 120, 80);
+            
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            const lines = text.split('\n');
+            lines.forEach((line, i) => {
+                ctx.fillText(line, x - 35, y + 20 + i*14);
+            });
+        }
+
+        function drawSignalPath(ctx, x, y, width, label) {
+            // Signal path with modulation
+            ctx.strokeStyle = '#1565C0';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let i = 0; i < width; i++) {
+                const baseWave = Math.sin(i * 0.05);
+                const modulation = Math.sin(i * 0.3) * 0.5;
+                const waveY = y + baseWave * modulation * 20;
+                if (i === 0) ctx.moveTo(x + i, waveY);
+                else ctx.lineTo(x + i, waveY);
+            }
+            ctx.stroke();
+            
+            // Label
+            ctx.fillStyle = '#1565C0';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x + width/2, y + 40);
+        }
+
+        function drawNoiseAddition(ctx, x, y) {
+            // Plus symbol for noise addition
+            ctx.strokeStyle = '#F44336';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(x - 15, y);
+            ctx.lineTo(x + 15, y);
+            ctx.moveTo(x, y - 15);
+            ctx.lineTo(x, y + 15);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#F44336';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('NOISE', x, y + 30);
+        }
+
+        function drawAnalogWave(ctx, x, y, width, height) {
+            ctx.strokeStyle = '#FF5722';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let i = 0; i <= width; i++) {
+                const waveY = y + height/2 + Math.sin(i * 0.02) * height/3;
+                if (i === 0) ctx.moveTo(x + i, waveY);
+                else ctx.lineTo(x + i, waveY);
+            }
+            ctx.stroke();
+        }
+
+        function drawDigitalWave(ctx, x, y, width, height) {
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const bitWidth = width / 16;
+            const bits = [1,0,1,1,0,1,0,0,1,1,1,0,1,0,1,1];
+            
+            ctx.moveTo(x, y + height/2);
+            
+            for (let i = 0; i < bits.length; i++) {
+                const bitX = x + i * bitWidth;
+                const bitY = y + height/2 - (bits[i] ? height/3 : -height/3);
+                
+                ctx.lineTo(bitX, bitY);
+                ctx.lineTo(bitX + bitWidth, bitY);
+            }
+            ctx.stroke();
+            
+            // Bit labels
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            bits.forEach((bit, i) => {
+                ctx.fillText(bit.toString(), x + i * bitWidth + bitWidth/2, y + height + 20);
+            });
+        }
+
+        function drawNoisyAnalogWave(ctx, x, y, width, height) {
+            ctx.strokeStyle = '#FF5722';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let i = 0; i <= width; i++) {
+                const cleanWave = Math.sin(i * 0.02) * height/3;
+                const noise = (Math.random() - 0.5) * height/6;
+                const waveY = y + height/2 + cleanWave + noise;
+                if (i === 0) ctx.moveTo(x + i, waveY);
+                else ctx.lineTo(x + i, waveY);
+            }
+            ctx.stroke();
+        }
+
+        function drawNoisyDigitalWave(ctx, x, y, width, height) {
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const bitWidth = width / 12;
+            const bits = [1,0,1,1,0,1,0,0,1,1,1,0];
+            
+            ctx.moveTo(x, y + height/2);
+            
+            for (let i = 0; i < bits.length; i++) {
+                const bitX = x + i * bitWidth;
+                const baseY = bits[i] ? height/3 : -height/3;
+                const noise = (Math.random() - 0.5) * height/8;
+                const bitY = y + height/2 - baseY + noise;
+                
+                ctx.lineTo(bitX, bitY);
+                ctx.lineTo(bitX + bitWidth, bitY);
+            }
+            ctx.stroke();
+        }
+
+        function drawComparisonTable(ctx, x, y) {
+            const tableData = [
+                ['Aspect', 'Analog', 'Digital'],
+                ['Signal Type', 'Continuous', 'Discrete (0,1)'],
+                ['Noise Effect', 'Cumulative', 'Threshold'],
+                ['Quality', 'Degrades', 'Maintained'],
+                ['Processing', 'Limited', 'Advanced'],
+                ['Storage', 'Analog Media', 'Digital Storage']
+            ];
+            
+            const cellWidth = 120;
+            const cellHeight = 25;
+            
+            tableData.forEach((row, i) => {
+                row.forEach((cell, j) => {
+                    // Cell background
+                    ctx.fillStyle = i === 0 ? '#1565C0' : (j === 0 ? '#E3F2FD' : 'white');
+                    ctx.fillRect(x + j * cellWidth, y + i * cellHeight, cellWidth, cellHeight);
+                    
+                    // Cell border
+                    ctx.strokeStyle = '#666';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(x + j * cellWidth, y + i * cellHeight, cellWidth, cellHeight);
+                    
+                    // Cell text
+                    ctx.fillStyle = i === 0 ? 'white' : '#333';
+                    ctx.font = i === 0 ? 'bold 12px Arial' : '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(cell, x + j * cellWidth + cellWidth/2, 
+                                y + i * cellHeight + cellHeight/2 + 4);
+                });
+            });
+        }
+
+        function drawCharacteristic(ctx, x, y, text) {
+            ctx.fillStyle = '#E3F2FD';
+            ctx.fillRect(x - 50, y - 15, 100, 30);
+            ctx.strokeStyle = '#1565C0';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x - 50, y - 15, 100, 30);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(text, x, y + 4);
+        }
+
+        function drawCommunicationType(ctx, title, color, specs) {
+            ctx.fillStyle = color;
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(title, 400, 40);
+            
+            // Specifications box
+            ctx.fillStyle = '#F5F5F5';
+            ctx.fillRect(50, 80, 700, 100);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(50, 80, 700, 100);
+            
+            // Spec details
+            ctx.fillStyle = '#333';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(`Bandwidth: ${specs.bandwidth}`, 70, 110);
+            ctx.fillText(`Latency: ${specs.latency}`, 70, 135);
+            ctx.fillText(`Reliability: ${specs.reliability}`, 70, 160);
+            
+            ctx.fillText(`Examples: ${specs.examples}`, 400, 125);
+        }
+
+        function drawVoiceWaveform(ctx, x, y, width, height) {
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            // Variable amplitude voice-like pattern
+            for (let i = 0; i <= width; i++) {
+                const envelope = Math.sin(i * 0.01) * 0.5 + 0.5;
+                const voice = Math.sin(i * 0.05) * envelope;
+                const waveY = y + height/2 + voice * height/3;
+                if (i === 0) ctx.moveTo(x + i, waveY);
+                else ctx.lineTo(x + i, waveY);
+            }
+            ctx.stroke();
+            
+            // Frequency indicator
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Voice Frequency Range: 300Hz - 3.4kHz', x + width/2, y + height + 20);
+        }
+
+        function drawDataPackets(ctx, x, y, width, height) {
+            const packetWidth = 60;
+            const packetHeight = 40;
+            const packets = 8;
+            const spacing = (width - packets * packetWidth) / (packets + 1);
+            
+            for (let i = 0; i < packets; i++) {
+                const packetX = x + spacing + i * (packetWidth + spacing);
+                const packetY = y + height/2 - packetHeight/2;
+                
+                // Packet rectangle
+                ctx.fillStyle = i % 2 === 0 ? '#2196F3' : '#42A5F5';
+                ctx.fillRect(packetX, packetY, packetWidth, packetHeight);
+                ctx.strokeStyle = '#1565C0';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(packetX, packetY, packetWidth, packetHeight);
+                
+                // Packet label
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`PKT${i+1}`, packetX + packetWidth/2, packetY + packetHeight/2 + 4);
+            }
+            
+            ctx.fillStyle = '#2196F3';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Data transmitted in discrete packets with error correction', x + width/2, y + height + 20);
+        }
+
+        function drawVideoFrames(ctx, x, y, width, height) {
+            const frameWidth = 80;
+            const frameHeight = 60;
+            const frames = 6;
+            const spacing = (width - frames * frameWidth) / (frames + 1);
+            
+            for (let i = 0; i < frames; i++) {
+                const frameX = x + spacing + i * (frameWidth + spacing);
+                const frameY = y + height/2 - frameHeight/2;
+                
+                // Frame rectangle
+                ctx.fillStyle = '#FFF3E0';
+                ctx.fillRect(frameX, frameY, frameWidth, frameHeight);
+                ctx.strokeStyle = '#FF9800';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(frameX, frameY, frameWidth, frameHeight);
+                
+                // Simulate image content
+                ctx.fillStyle = '#FF9800';
+                for (let row = 0; row < 3; row++) {
+                    for (let col = 0; col < 4; col++) {
+                        if (Math.random() > 0.5) {
+                            ctx.fillRect(frameX + 10 + col * 15, frameY + 10 + row * 15, 10, 10);
+                        }
+                    }
+                }
+                
+                // Frame number
+                ctx.fillStyle = '#FF9800';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`F${i+1}`, frameX + frameWidth/2, frameY + frameHeight + 15);
+            }
+            
+            // Arrow showing sequence
+            for (let i = 0; i < frames - 1; i++) {
+                const startX = x + spacing + i * (frameWidth + spacing) + frameWidth;
+                const arrowY = y + height/2;
+                drawArrow(ctx, startX + 5, arrowY, startX + spacing - 5, arrowY);
+            }
+            
+            ctx.fillStyle = '#FF9800';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Video frames transmitted at 30-60 FPS with compression', x + width/2, y + height + 40);
+        }
+
+        function drawMultimediaIntegration(ctx, x, y, width, height) {
+            // Central multimedia hub
+            drawNode(ctx, x + width/2, y + height/2, 60, 'MULTIMEDIA\nINTEGRATION', '#9C27B0', true);
+            
+            // Surrounding media types
+            const mediaTypes = [
+                {x: x + 100, y: y + 50, label: 'AUDIO', color: '#4CAF50'},
+                {x: x + width - 100, y: y + 50, label: 'VIDEO', color: '#FF9800'},
+                {x: x + width - 100, y: y + height - 50, label: 'DATA', color: '#2196F3'},
+                {x: x + 100, y: y + height - 50, label: 'GRAPHICS', color: '#F44336'}
+            ];
+            
+            mediaTypes.forEach(media => {
+                drawNode(ctx, media.x, media.y, 40, media.label, media.color);
+                drawConnection(ctx, media.x, media.y, x + width/2, y + height/2, '#666', 2);
+            });
+            
+            // Synchronization indicators
+            ctx.strokeStyle = '#9C27B0';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 5]);
+            ctx.strokeRect(x + 50, y + 20, width - 100, height - 40);
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#9C27B0';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Synchronized multimedia streaming with QoS management', x + width/2, y + height + 30);
+        }
+
+        function drawNode(ctx, x, y, radius, label, color, isHub = false) {
+            // Node circle
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.strokeStyle = isHub ? '#333' : '#666';
+            ctx.lineWidth = isHub ? 3 : 2;
+            ctx.stroke();
+            
+            // Node label
+            ctx.fillStyle = isHub ? 'white' : '#333';
+            ctx.font = `${isHub ? 'bold ' : ''}12px Arial`;
+            ctx.textAlign = 'center';
+            
+            const lines = label.split('\n');
+            lines.forEach((line, i) => {
+                ctx.fillText(line, x, y + i*14 - (lines.length-1)*7);
+            });
+        }
+
+        function drawConnection(ctx, x1, y1, x2, y2, color, lineWidth) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        function drawDirectionalConnection(ctx, x1, y1, x2, y2, color) {
+            // Connection line
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            
+            // Direction arrow
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            const midX = (x1 + x2) / 2;
+            const midY = (y1 + y2) / 2;
+            
+            const headLength = 15;
+            ctx.beginPath();
+            ctx.moveTo(midX, midY);
+            ctx.lineTo(midX - headLength * Math.cos(angle - Math.PI/6), 
+                      midY - headLength * Math.sin(angle - Math.PI/6));
+            ctx.moveTo(midX, midY);
+            ctx.lineTo(midX - headLength * Math.cos(angle + Math.PI/6), 
+                      midY - headLength * Math.sin(angle + Math.PI/6));
+            ctx.stroke();
+        }
+
+        function drawBusLine(ctx, x, y, width, height, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y - height/2, width, height);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('SHARED BUS', x + width/2, y + 5);
+        }
+
+        function drawTerminator(ctx, x, y) {
+            ctx.fillStyle = '#666';
+            ctx.fillRect(x - 15, y - 15, 30, 30);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 10px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('50Ω', x, y + 3);
+        }
+
+        function drawToken(ctx, x, y) {
+            // Token ring indicator
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(x + 30, y - 30, 15, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#FF9800';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 10px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('TOKEN', x + 30, y - 26);
+        }
+
+        function drawTopologyCharacteristics(ctx, x, y, characteristics) {
+            ctx.fillStyle = '#F5F5F5';
+            ctx.fillRect(x, y, 400, characteristics.length * 25 + 20);
+            ctx.strokeStyle = '#1565C0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, 400, characteristics.length * 25 + 20);
+            
+            ctx.fillStyle = '#1565C0';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Characteristics:', x + 10, y + 20);
+            
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            characteristics.forEach((char, i) => {
+                ctx.fillText(char, x + 20, y + 45 + i * 20);
+            });
+        }
+
+        function animateDataFlow(ctx, topology) {
+            let frame = 0;
+            const maxFrames = 100;
+            
+            function animate() {
+                // Redraw topology first
+                switch(topology) {
+                    case 'star': drawStarTopology(); break;
+                    case 'mesh': drawMeshTopology(); break;
+                    case 'ring': drawRingTopology(); break;
+                    case 'bus': drawBusTopology(); break;
+                }
+                
+                // Draw animated data packets
+                const progress = frame / maxFrames;
+                
+                if (topology === 'star') {
+                    // Data flowing from hub to all nodes
+                    const hubX = 400, hubY = 300;
+                    const positions = [
+                        {x: 400, y: 150}, {x: 550, y: 200}, {x: 550, y: 400},
+                        {x: 400, y: 450}, {x: 250, y: 400}, {x: 250, y: 200}
+                    ];
+                    
+                    positions.forEach(pos => {
+                        const dataX = hubX + (pos.x - hubX) * progress;
+                        const dataY = hubY + (pos.y - hubY) * progress;
+                        drawDataPacket(ctx, dataX, dataY);
+                    });
+                    
+                } else if (topology === 'ring') {
+                    // Token moving around the ring
+                    const centerX = 400, centerY = 280, radius = 120;
+                    const angle = (progress * 2 * Math.PI) - Math.PI/2;
+                    const tokenX = centerX + radius * Math.cos(angle);
+                    const tokenY = centerY + radius * Math.sin(angle);
+                    
+                    ctx.fillStyle = '#FFD700';
+                    ctx.beginPath();
+                    ctx.arc(tokenX, tokenY, 8, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                } else if (topology === 'bus') {
+                    // Data propagating along bus
+                    const busStart = 150;
+                    const busEnd = 650;
+                    const dataX = busStart + (busEnd - busStart) * progress;
+                    
+                    drawDataPacket(ctx, dataX, 300);
+                }
+                
+                frame++;
+                if (frame < maxFrames) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            animate();
+        }
+
+        function drawDataPacket(ctx, x, y) {
+            ctx.fillStyle = '#FF5722';
+            ctx.fillRect(x - 5, y - 5, 10, 10);
+            ctx.strokeStyle = '#D32F2F';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x - 5, y - 5, 10, 10);
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize canvas drawings when page loads
+        window.onload = function() {
+            // Initialize system overview canvas
+            showSystemComponents();
+            
+            // Initialize other canvases with default content
+            setTimeout(() => {
+                showCompleteSystem();
+                compareSignals();
+                drawStarTopology();
+                showVoiceComm();
+            }, 500);
+            
+            // Auto-generate initial signal analysis
+            setTimeout(generateSignals, 1000);
+        };
+    </script>
+
+    <!-- RetroArch Shader Animation Script -->
+    <script>
+        /*
+         * RetroArch Menu Shader Pipeline Ribbon
+         * Port for THREE.js
+         * https://github.com/libretro/RetroArch
+         */
+        let scene, camera, renderer, ribbon;
+        const container = document.querySelector("#retroarch-background");
+        const init = () => {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, 1, 0.1, 10000);
+            camera.position.z = 2;
+            renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: true
+            });
+            container.appendChild(renderer.domElement);
+            ribbon = new THREE.Mesh(
+                new THREE.PlaneGeometry(1, 1, 128, 128),
+                new THREE.ShaderMaterial({
+                    uniforms: {
+                        time: {
+                            value: 1.0
+                        }
+                    },
+                    vertexShader: `
+                    varying vec3 vEC;
+                    uniform float time;
+                    float iqhash(float n) {
+                        return fract(sin(n) * 43758.5453);
+                    }
+                    float noise(vec3 x) {
+                        vec3 p = floor(x);
+                        vec3 f = fract(x);
+                        f = f * f * (3.0 - 2.0 * f);
+                        float n = p.x + p.y * 57.0 + 113.0 * p.z;
+                        return mix(mix(mix(iqhash(n), iqhash(n + 1.0), f.x),
+                                     mix(iqhash(n + 57.0), iqhash(n + 58.0), f.x), f.y),
+                                     mix(mix(iqhash(n + 113.0), iqhash(n + 114.0), f.x),
+                                     mix(iqhash(n + 170.0), iqhash(n + 171.0), f.x), f.y), f.z);
+                    }
+                    float xmb_noise2(vec3 x) {
+                        return cos(x.z * 4.0) * cos(x.z + time / 10.0 + x.x);
+                    }
+                    void main() {
+                        vec4 pos = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                        vec3 v = vec3(pos.x, 0.0, pos.y);
+                        vec3 v2 = v;
+                        vec3 v3 = v;
+                        v.y = xmb_noise2(v2) / 8.0;
+                        v3.x -= time / 5.0;
+                        v3.x /= 4.0;
+                        v3.z -= time / 10.0;
+                        v3.y -= time / 100.0;
+                        v.z -= noise(v3 * 7.0) / 15.0;
+                        v.y -= noise(v3 * 7.0) / 15.0 + cos(v.x * 2.0 - time / 2.0) / 5.0 - 0.3;
+                        vEC = v;
+                        gl_Position = vec4(v, 1.0);
+                    }
+                    `,
+                    fragmentShader: `
+                    uniform float time;
+                    varying vec3 vEC;
+                    void main()
+                    {
+                       const vec3 up = vec3(0.0, 0.0, 1.0);
+                       vec3 x = dFdx(vEC);
+                       vec3 y = dFdy(vEC);
+                       vec3 normal = normalize(cross(x, y));
+                       float c = 1.0 - dot(normal, up);
+                       c = (1.0 - cos(c * c)) / 3.0;
+                       gl_FragColor = vec4(1.0, 1.0, 1.0, c * 1.5);
+                    }
+                    `,
+                    extensions: {
+                        derivatives: true,
+                        fragDepth: false,
+                        drawBuffers: false,
+                        shaderTextureLOD: false
+                    },
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    depthTest: false
+                })
+            );
+            scene.add(ribbon);
+            resize();
+            window.addEventListener("resize", resize);
+        };
+        const resize = () => {
+            const {
+                offsetWidth,
+                offsetHeight
+            } = container;
+            renderer.setSize(offsetWidth, offsetHeight);
+            renderer.setPixelRatio(devicePixelRatio);
+            camera.aspect = offsetWidth / offsetHeight;
+            camera.updateProjectionMatrix();
+            ribbon.scale.set(camera.aspect * 1.55, 0.75, 1);
+        };
+        const animate = () => {
+            ribbon.material.uniforms.time.value += 0.01;
+            renderer.render(scene, camera);
+            requestAnimationFrame(() => animate());
+        };
+        
+        // Initialize the RetroArch background when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            animate();
+        });
+    </script>
+</body>
+</html>
