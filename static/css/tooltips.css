@@ -1,0 +1,364 @@
+/*
+ * Telecommunications Acronym Tooltips CSS
+ * Professional styling for acronym tooltips in the telecom lab application
+ */
+
+/* Tooltip container - the element that has the tooltip */
+.tooltip-acronym {
+    position: relative;
+    display: inline;
+    cursor: help;
+    border-bottom: 1px dotted #1565C0;
+    color: #1565C0;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.tooltip-acronym:hover {
+    color: #0D47A1;
+    border-bottom-color: #0D47A1;
+    text-shadow: 0 0 2px rgba(21, 101, 192, 0.3);
+}
+
+/* Tooltip text */
+.tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #1565C0;
+    color: white;
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 8px;
+    position: absolute;
+    z-index: 9999;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -150px; /* Use half of the width (300px/2) to center */
+    width: 300px;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: normal;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid #0D47A1;
+    transition: all 0.3s ease;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
+/* Tooltip arrow */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -8px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: #1565C0 transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.tooltip-acronym:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive tooltip positioning */
+@media (max-width: 768px) {
+    .tooltip-text {
+        width: 280px;
+        margin-left: -140px;
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tooltip-text {
+        width: 250px;
+        margin-left: -125px;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+}
+
+/* Category-based color coding for tooltips */
+.tooltip-acronym[data-category="Modulation"] {
+    color: #FF5722;
+    border-bottom-color: #FF5722;
+}
+
+.tooltip-acronym[data-category="Modulation"]:hover {
+    color: #D32F2F;
+    border-bottom-color: #D32F2F;
+}
+
+.tooltip-acronym[data-category="Modulation"] .tooltip-text {
+    background-color: #FF5722;
+    border-color: #D32F2F;
+}
+
+.tooltip-acronym[data-category="Modulation"] .tooltip-text::after {
+    border-color: #FF5722 transparent transparent transparent;
+}
+
+.tooltip-acronym[data-category="Network Architecture"] {
+    color: #4CAF50;
+    border-bottom-color: #4CAF50;
+}
+
+.tooltip-acronym[data-category="Network Architecture"]:hover {
+    color: #2E7D32;
+    border-bottom-color: #2E7D32;
+}
+
+.tooltip-acronym[data-category="Network Architecture"] .tooltip-text {
+    background-color: #4CAF50;
+    border-color: #2E7D32;
+}
+
+.tooltip-acronym[data-category="Network Architecture"] .tooltip-text::after {
+    border-color: #4CAF50 transparent transparent transparent;
+}
+
+.tooltip-acronym[data-category="Performance Metrics"] {
+    color: #FF9800;
+    border-bottom-color: #FF9800;
+}
+
+.tooltip-acronym[data-category="Performance Metrics"]:hover {
+    color: #F57C00;
+    border-bottom-color: #F57C00;
+}
+
+.tooltip-acronym[data-category="Performance Metrics"] .tooltip-text {
+    background-color: #FF9800;
+    border-color: #F57C00;
+}
+
+.tooltip-acronym[data-category="Performance Metrics"] .tooltip-text::after {
+    border-color: #FF9800 transparent transparent transparent;
+}
+
+.tooltip-acronym[data-category="Core Network"] {
+    color: #9C27B0;
+    border-bottom-color: #9C27B0;
+}
+
+.tooltip-acronym[data-category="Core Network"]:hover {
+    color: #7B1FA2;
+    border-bottom-color: #7B1FA2;
+}
+
+.tooltip-acronym[data-category="Core Network"] .tooltip-text {
+    background-color: #9C27B0;
+    border-color: #7B1FA2;
+}
+
+.tooltip-acronym[data-category="Core Network"] .tooltip-text::after {
+    border-color: #9C27B0 transparent transparent transparent;
+}
+
+.tooltip-acronym[data-category="Radio Technologies"] {
+    color: #00BCD4;
+    border-bottom-color: #00BCD4;
+}
+
+.tooltip-acronym[data-category="Radio Technologies"]:hover {
+    color: #0097A7;
+    border-bottom-color: #0097A7;
+}
+
+.tooltip-acronym[data-category="Radio Technologies"] .tooltip-text {
+    background-color: #00BCD4;
+    border-color: #0097A7;
+}
+
+.tooltip-acronym[data-category="Radio Technologies"] .tooltip-text::after {
+    border-color: #00BCD4 transparent transparent transparent;
+}
+
+.tooltip-acronym[data-category="Protocols"] {
+    color: #607D8B;
+    border-bottom-color: #607D8B;
+}
+
+.tooltip-acronym[data-category="Protocols"]:hover {
+    color: #455A64;
+    border-bottom-color: #455A64;
+}
+
+.tooltip-acronym[data-category="Protocols"] .tooltip-text {
+    background-color: #607D8B;
+    border-color: #455A64;
+}
+
+.tooltip-acronym[data-category="Protocols"] .tooltip-text::after {
+    border-color: #607D8B transparent transparent transparent;
+}
+
+.tooltip-acronym[data-category="Security"] {
+    color: #795548;
+    border-bottom-color: #795548;
+}
+
+.tooltip-acronym[data-category="Security"]:hover {
+    color: #5D4037;
+    border-bottom-color: #5D4037;
+}
+
+.tooltip-acronym[data-category="Security"] .tooltip-text {
+    background-color: #795548;
+    border-color: #5D4037;
+}
+
+.tooltip-acronym[data-category="Security"] .tooltip-text::after {
+    border-color: #795548 transparent transparent transparent;
+}
+
+.tooltip-acronym[data-category="Hardware"] {
+    color: #E91E63;
+    border-bottom-color: #E91E63;
+}
+
+.tooltip-acronym[data-category="Hardware"]:hover {
+    color: #C2185B;
+    border-bottom-color: #C2185B;
+}
+
+.tooltip-acronym[data-category="Hardware"] .tooltip-text {
+    background-color: #E91E63;
+    border-color: #C2185B;
+}
+
+.tooltip-acronym[data-category="Hardware"] .tooltip-text::after {
+    border-color: #E91E63 transparent transparent transparent;
+}
+
+/* Special styling for composite acronyms like "5G NR", "O-RAN", etc. */
+.tooltip-acronym.composite-acronym {
+    padding: 2px 4px;
+    background: linear-gradient(135deg, rgba(21, 101, 192, 0.1), rgba(13, 71, 161, 0.1));
+    border-radius: 4px;
+    border-bottom: 2px solid #1565C0;
+}
+
+.tooltip-acronym.composite-acronym:hover {
+    background: linear-gradient(135deg, rgba(21, 101, 192, 0.2), rgba(13, 71, 161, 0.2));
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(21, 101, 192, 0.3);
+}
+
+/* Animation for tooltip appearance */
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.tooltip-acronym:hover .tooltip-text {
+    animation: tooltipFadeIn 0.3s ease;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .tooltip-acronym {
+        border-bottom: 2px solid;
+        font-weight: bold;
+    }
+    
+    .tooltip-text {
+        border: 2px solid;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .tooltip-acronym,
+    .tooltip-text {
+        transition: none;
+    }
+    
+    .tooltip-acronym:hover .tooltip-text {
+        animation: none;
+    }
+}
+
+/* Focus styles for keyboard navigation */
+.tooltip-acronym:focus {
+    outline: 2px solid #1565C0;
+    outline-offset: 2px;
+}
+
+.tooltip-acronym:focus .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Tooltip positioning variants for better screen edge handling */
+.tooltip-text.tooltip-top {
+    bottom: 125%;
+    top: auto;
+}
+
+.tooltip-text.tooltip-bottom {
+    top: 125%;
+    bottom: auto;
+}
+
+.tooltip-text.tooltip-bottom::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -8px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #1565C0 transparent;
+}
+
+.tooltip-text.tooltip-left {
+    left: auto;
+    right: 105%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.tooltip-text.tooltip-right {
+    left: 105%;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Loading state for dynamic tooltips */
+.tooltip-text.loading {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+.tooltip-text.loading::before {
+    content: "Loading definition...";
+    font-style: italic;
+}
+
+/* Error state for failed tooltip loads */
+.tooltip-text.error {
+    background-color: #ffebee;
+    color: #d32f2f;
+    border-color: #f44336;
+}
+
+.tooltip-text.error::before {
+    content: "Definition unavailable";
+    font-style: italic;
+}
